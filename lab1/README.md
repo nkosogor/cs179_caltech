@@ -201,4 +201,57 @@ This method allows the approximation of \(y[n]\) to be calculated in parallel fo
 
 # Question 3: Small-Kernel Convolution 
 
-See the code in `blur.cu`
+See the code in `blur.cu`:
+
+Running:
+```c 
+./audio-blur 256 1000 resources/example_test.wav output.wav
+ ```
+ Results in:
+```c 
+Normalized by factor of: 0.964579
+gaussian[0] = 0.0111947
+gaussian[1] = 0.0163699
+gaussian[2] = 0.0229988
+gaussian[3] = 0.0310452
+gaussian[4] = 0.0402634
+gaussian[5] = 0.0501713
+gaussian[6] = 0.0600659
+gaussian[7] = 0.0690923
+gaussian[8] = 0.0763588
+gaussian[9] = 0.0810805
+gaussian[10] = 0.0827185
+gaussian[11] = 0.0810805
+gaussian[12] = 0.0763588
+gaussian[13] = 0.0690923
+gaussian[14] = 0.0600659
+gaussian[15] = 0.0501713
+gaussian[16] = 0.0402634
+gaussian[17] = 0.0310452
+gaussian[18] = 0.0229988
+gaussian[19] = 0.0163699
+gaussian[20] = 0.0111947
+CPU blurring...
+GPU blurring...
+No kernel error detected
+Comparing...
+
+Successful output
+
+CPU time: 77.2547 milliseconds
+GPU time: 4.95018 milliseconds
+
+Speedup factor: 15.6064
+
+CPU blurring...
+GPU blurring...
+No kernel error detected
+Comparing...
+
+Successful output
+
+CPU time: 72.7711 milliseconds
+GPU time: 2.75318 milliseconds
+
+Speedup factor: 26.4316
+ ```
