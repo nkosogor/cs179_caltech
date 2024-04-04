@@ -2,9 +2,9 @@ CS 179: GPU Computing
 Lab 1: Introduction to CUDA
 Name: Nikita Kosogorov
 
-#### Question 1
+# Question 1
 
-### 1.1 Incorrect Pointer Initialization
+## 1.1 Incorrect Pointer Initialization
 
 **Original Code:**
 ```c
@@ -27,7 +27,7 @@ void test1() {
 }
 ```
 
-### 1.2 Pointer and Variable Declaration Error
+## 1.2 Pointer and Variable Declaration Error
 
 **Original Code:**
 ```c
@@ -66,7 +66,7 @@ void test2() {
 }
 ```
 
-### 1.3 Incorrect Memory Allocation for an Array
+## 1.3 Incorrect Memory Allocation for an Array
 
 **Original Code:**
 ```c
@@ -100,7 +100,7 @@ void test3() {
 }
 ```
 
-### 1.4 Setting a 2D Array Element
+## 1.4 Setting a 2D Array Element
 
 **Original Code:**
 ```c
@@ -128,7 +128,7 @@ void test4() {
 }
 ```
 
-### 1.5 Misplaced Null Pointer Check
+## 1.5 Misplaced Null Pointer Check
 
 **Original Code:**
 ```c
@@ -160,7 +160,7 @@ void test5() {
 ```
 
 
-### Question 2: Parallelization
+# Question 2
 
 ## 2.1 GPU Implementation Comparison
 
@@ -198,6 +198,7 @@ This method allows the approximation of \(y[n]\) to be calculated in parallel fo
 
 
 
-================================================================================
-Question 3: Small-Kernel Convolution (50 points)
-================================================================================
+
+# Question 3: Small-Kernel Convolution 
+
+See the code in `blur.cu`
