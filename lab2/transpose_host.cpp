@@ -216,7 +216,12 @@ int main(int argc, char *argv[]) {
         if (kernel == "optimal"    || kernel == "all") {
             START_TIMER();
             cudaTranspose(d_input, d_output, n, OPTIMAL);
-            STOP_RECORD_TIMER(optimal_gpu_ms);
+            cudaError_t error = cudaGetLastError();
+	    if (error != cudaSuccess) {
+    		fprintf(stderr, "CUDA error: %s\n", cudaGetErrorString(error));
+	    }
+
+	    STOP_RECORD_TIMER(optimal_gpu_ms);
 
             gpuErrChk(cudaMemcpy(output, d_output, n * n * sizeof(float), 
                 cudaMemcpyDeviceToHost));

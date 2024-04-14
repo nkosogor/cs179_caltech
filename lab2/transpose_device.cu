@@ -53,13 +53,26 @@ void shmemTransposeKernel(const float *input, float *output, int n) {
     // padding). Again, comment on all sub-optimal accesses.
 
     // __shared__ float data[???];
+    __shared__ float tile[64][65]; // Using padding to avoid bank conflicts
 
-    const int i = threadIdx.x + 64 * blockIdx.x;
-    int j = 4 * threadIdx.y + 64 * blockIdx.y;
-    const int end_j = j + 4;
+    int x = blockIdx.x * 64 + threadIdx.x;
+    int y = blockIdx.y * 64 + threadIdx.y;
 
-    for (; j < end_j; j++)
-        output[j + n * i] = input[i + n * j];
+    // Load input block into shared memory tile, coalescing global memory reads
+    for (int i = 0; i < 64; i += 16) {
+        tile[threadIdx.y + i][threadIdx.x] = input[(y + i) * n + x];
+    }
+    __syncthreads();
+
+    // Transpose block in shared memory
+    x = blockIdx.y * 64 + threadIdx.x; // Transposed block's x coordinate
+    y = blockIdx.x * 64 + threadIdx.y; // Transposed block's y coordinate
+
+    // Store from shared memory tile to output, coalescing global memory writes
+    for (int i = 0; i < 64; i += 16) {
+        output[(y + i) * n + x] = tile[threadIdx.x][threadIdx.y + i];
+    }
+
 }
 
 __global__
@@ -67,14 +80,74 @@ void optimalTransposeKernel(const float *input, float *output, int n) {
     // TODO: This should be based off of your shmemTransposeKernel.
     // Use any optimization tricks discussed so far to improve performance.
     // Consider ILP and loop unrolling.
+    __shared__ float tile[64][65];
 
-    const int i = threadIdx.x + 64 * blockIdx.x;
-    int j = 4 * threadIdx.y + 64 * blockIdx.y;
-    const int end_j = j + 4;
+    int x = blockIdx.x * 64 + threadIdx.x;
+    int y = blockIdx.y * 64 + (8 * threadIdx.y);  // Each thread handles 8 rows
 
-    for (; j < end_j; j++)
-        output[j + n * i] = input[i + n * j];
+    // Load data from global memory to shared memory, unroll loop explicitly
+    if (x < n) {
+        if (y < n && threadIdx.y * 8 < 64) {
+            tile[threadIdx.y * 8][threadIdx.x] = input[y * n + x];
+        }
+        if (y + 1 < n && threadIdx.y * 8 + 1 < 64) {
+            tile[threadIdx.y * 8 + 1][threadIdx.x] = input[(y + 1) * n + x];
+        }
+        if (y + 2 < n && threadIdx.y * 8 + 2 < 64) {
+            tile[threadIdx.y * 8 + 2][threadIdx.x] = input[(y + 2) * n + x];
+        }
+        if (y + 3 < n && threadIdx.y * 8 + 3 < 64) {
+            tile[threadIdx.y * 8 + 3][threadIdx.x] = input[(y + 3) * n + x];
+        }
+        if (y + 4 < n && threadIdx.y * 8 + 4 < 64) {
+            tile[threadIdx.y * 8 + 4][threadIdx.x] = input[(y + 4) * n + x];
+        }
+        if (y + 5 < n && threadIdx.y * 8 + 5 < 64) {
+            tile[threadIdx.y * 8 + 5][threadIdx.x] = input[(y + 5) * n + x];
+        }
+        if (y + 6 < n && threadIdx.y * 8 + 6 < 64) {
+            tile[threadIdx.y * 8 + 6][threadIdx.x] = input[(y + 6) * n + x];
+        }
+        if (y + 7 < n && threadIdx.y * 8 + 7 < 64) {
+            tile[threadIdx.y * 8 + 7][threadIdx.x] = input[(y + 7) * n + x];
+        }
+    }
+
+    __syncthreads();
+
+    // Calculate transposed output indices
+    int trans_x = blockIdx.y * 64 + threadIdx.x;
+    int trans_y = blockIdx.x * 64 + (8 * threadIdx.y);
+
+    // Store data from shared memory to output, unroll loop explicitly
+    if (trans_x < n) {
+        if (trans_y < n && threadIdx.y * 8 < 64) {
+            output[trans_y * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8];
+        }
+        if (trans_y + 1 < n && threadIdx.y * 8 + 1 < 64) {
+            output[(trans_y + 1) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 1];
+        }
+        if (trans_y + 2 < n && threadIdx.y * 8 + 2 < 64) {
+            output[(trans_y + 2) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 2];
+        }
+        if (trans_y + 3 < n && threadIdx.y * 8 + 3 < 64) {
+            output[(trans_y + 3) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 3];
+        }
+        if (trans_y + 4 < n && threadIdx.y * 8 + 4 < 64) {
+            output[(trans_y + 4) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 4];
+        }
+        if (trans_y + 5 < n && threadIdx.y * 8 + 5 < 64) {
+            output[(trans_y + 5) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 5];
+        }
+        if (trans_y + 6 < n && threadIdx.y * 8 + 6 < 64) {
+            output[(trans_y + 6) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 6];
+        }
+        if (trans_y + 7 < n && threadIdx.y * 8 + 7 < 64) {
+            output[(trans_y + 7) * n + trans_x] = tile[threadIdx.x][threadIdx.y * 8 + 7];
+        }
+    }
 }
+
 
 void cudaTranspose(
     const float *d_input,

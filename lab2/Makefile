@@ -2,19 +2,13 @@ CC = /usr/bin/g++
 
 LD_FLAGS = -lrt
 
-CUDA_PATH       ?= /usr/local/cuda
+CUDA_PATH       ?= /usr
 CUDA_INC_PATH   ?= $(CUDA_PATH)/include
 CUDA_BIN_PATH   ?= $(CUDA_PATH)/bin
 CUDA_LIB_PATH   ?= $(CUDA_PATH)/lib
 
 # CUDA code generation flags
-GENCODE_FLAGS   := -gencode arch=compute_30,code=sm_30 \
-        -gencode arch=compute_35,code=sm_35 \
-        -gencode arch=compute_50,code=sm_50 \
-        -gencode arch=compute_52,code=sm_52 \
-        -gencode arch=compute_60,code=sm_60 \
-        -gencode arch=compute_61,code=sm_61 \
-        -gencode arch=compute_61,code=compute_61
+GENCODE_FLAGS   := -gencode arch=compute_52,code=sm_52
         
 # Common binaries
 NVCC            ?= $(CUDA_BIN_PATH)/nvcc
