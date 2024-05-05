@@ -12,10 +12,10 @@ This lab aligns two 3D point clouds by computing a transformation matrix using C
 
 ### Results
 
-```c 
+```bash 
 ./point_alignment resources/bunny.obj resources/noisy-bunny.obj outputs/noisy_bunny_output.obj
 ```
-```c 
+```
 Aligning resources/bunny.obj with resources/noisy-bunny.obj
 Reading resources/bunny.obj, which has 14290 vertices
 Reading resources/noisy-bunny.obj, which has 14290 vertices
@@ -26,10 +26,10 @@ Reading resources/noisy-bunny.obj, which has 14290 vertices
 ```
 
 
-```c
+```bash
 ./point_alignment resources/bunny2.obj resources/bunny2_trans.obj outputs/bunny2_output.obj
 ```
-```c
+```
 Aligning resources/bunny2.obj with resources/bunny2_trans.obj
 Reading resources/bunny2.obj, which has 14290 vertices
 Reading resources/bunny2_trans.obj, which has 14290 vertices
@@ -38,10 +38,10 @@ Reading resources/bunny2_trans.obj, which has 14290 vertices
 0.5 1.97539e-08 0.000398134 9.65071e-09 
 0 0 0 1 
 ``` 
-```c
+```bash
 ./point_alignment resources/cube.obj resources/cube2.obj outputs/cube_output.obj
 ```
-```c
+```
 Aligning resources/cube.obj with resources/cube2.obj
 Reading resources/cube.obj, which has 8 vertices
 Reading resources/cube2.obj, which has 8 vertices
@@ -50,11 +50,11 @@ Reading resources/cube2.obj, which has 8 vertices
 0 0 2 -3.97364e-08 
 0 0 0 1 
 ```
-```c
+```bash
 ./point_alignment resources/tetrahedron2.obj resources/tetrahedron2_trans.obj outputs/tetrahedron_output.obj
 ```
 
-```c
+```
 Aligning resources/tetrahedron2.obj with resources/tetrahedron2_trans.obj
 Reading resources/tetrahedron2.obj, which has 4 vertices
 Reading resources/tetrahedron2_trans.obj, which has 4 vertices

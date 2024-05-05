@@ -22,13 +22,13 @@ This step involves a reduction operation to find the maximum amplitude and scale
 
 
 Running:
-```c 
+```bash
 ./noaudio-fft 256 64
  ```
 
 Results in:
- ```c 
- Index of the GPU with the lowest temperature: 1 (0 C)
+ ``` 
+Index of the GPU with the lowest temperature: 1 (0 C)
 Time limit for this program set to 180 seconds
 
 N (number of samples per channel):    10000000
@@ -92,11 +92,11 @@ Speedup factor (normalization): 52.712
  ```
 
 
-```c
+```bash
 ./audio-fft 256 32 resources/example_testfile.wav resources/silo_small.wav outputs/output1.wav
 ```
 
-```c 
+```
 Index of the GPU with the lowest temperature: 1 (0 C)
 Time limit for this program set to 180 seconds
 
@@ -161,11 +161,11 @@ GPU time (normalization): 0.30272 milliseconds
 Speedup factor (normalization): 29.3243
 ```
 
-```c 
+```bash
 ./audio-fft 256 32 resources/example_testfile.wav resources/silo_small.wav outputs/output2.wav
 ```
 
-```c 
+``` 
 Index of the GPU with the lowest temperature: 1 (0 C)
 Time limit for this program set to 180 seconds
 
