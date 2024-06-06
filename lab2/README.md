@@ -240,3 +240,17 @@ Size 4096 optimal GPU: 0.561728 ms
  ```
 
 The performance of various matrix transpose implementations across different sizes shows that GPU-based methods significantly outperform the naive CPU implementation. The shared memory GPU approach shows a marked improvement over the naive GPU method due to optimized memory access patterns. However, the "optimal" GPU implementation, despite employing advanced techniques like loop unrolling and increased work per thread, does not demonstrate a significant performance gain over the shared memory version, suggesting that additional optimizations yield diminishing returns or are limited by other factors such as execution configuration or hardware constraints.
+
+
+## Feedback
+
+1.1) Need 80 instructions because there are 4 warps and 2 instructions per warp. This results in 8 instructions per clock cycle, with an instruction requiring 10 clocks. Therefore, we need 8 * 10 = 80 to hide the latency (refer to Lecture 5, slide 19).
+
+1.3) Provides correct per block cache line writes but does not explicitly state whether the number provided is per warp or per block.
+
+1.4.a) There is no bank conflict. Bank conflicts occur when multiple threads in a warp try to access different elements in the same bank. The different `i` in a warp for `output[i + 32 * j]` means that they have different banks.
+
+1.4.b) During the 2nd operation, output gets reloaded.
+
+1.4.c) FMA of the first operation depends on loading of lhs and rhs. Load of output in the 2nd operation depends on store in the 1st.
+
